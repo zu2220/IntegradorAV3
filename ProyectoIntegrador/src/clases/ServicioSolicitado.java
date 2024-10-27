@@ -56,18 +56,7 @@ public class ServicioSolicitado extends ServicioEspecifico{
         this.cliente = cliente;
     }
 
-    public ServicioSolicitado(Date fechaServicio, String horaInicio, String horaTermino, String estado, PaqueteServicio paquete, Terapeuta terapeuta, Ambiente ambiente, Cliente cliente, String Nombre, String tipoServicio, Double precio, InsumoRequerido[] insumoRequerido, String Servicio) {
-        super(Nombre, tipoServicio, precio, insumoRequerido, Servicio);
-        this.fechaServicio = fechaServicio;
-        this.horaInicio = horaInicio;
-        this.horaTermino = horaTermino;
-        this.estado = estado;
-        this.CodigoServicio = generarCodigo(fechaServicio, horaInicio, horaTermino);
-        this.paquete = paquete;
-        this.terapeuta = terapeuta;
-        this.ambiente = ambiente;
-        this.cliente = cliente;
-    }
+
     
 
     public Date getFechaServicio() {

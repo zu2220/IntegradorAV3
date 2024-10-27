@@ -1,10 +1,10 @@
 
 package clases;
 
-import Clase.Servicio;
+import clases.ServicioSolicitado;
 
 
-public class ServicioEspecifico extends Servicio{
+public class ServicioEspecifico{
     private String Nombre;
     private String tipoServicio;
     private Double precio;
@@ -21,13 +21,7 @@ public class ServicioEspecifico extends Servicio{
         this.insumoRequerido = insumoRequerido;
     }
 
-    public ServicioEspecifico(String Nombre, String tipoServicio, Double precio, InsumoRequerido[] insumoRequerido, String Servicio) {
-        super(Servicio);
-        this.Nombre = Nombre;
-        this.tipoServicio = tipoServicio;
-        this.precio = precio;
-        this.insumoRequerido = insumoRequerido;
-    }
+ 
 
     public String getNombre() {
         return Nombre;
