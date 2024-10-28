@@ -14,7 +14,7 @@ public class DataSource {
         
         try{
             ds.setServerName("HECTORLAP");
-            ds.setDatabaseName("InventarioZariSpa");
+            ds.setDatabaseName("ZariSpa");
             
            //ds.setPortNumber(1433);
             ds.setUser("sa");

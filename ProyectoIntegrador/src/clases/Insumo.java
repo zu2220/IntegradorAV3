@@ -93,7 +93,7 @@ private String codigo;
         this.nombre = nombre;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
     public Insumo(){
