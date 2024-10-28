@@ -18,7 +18,14 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.*;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import modelo.Modelo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -26,6 +33,9 @@ import javax.swing.JOptionPane;
  */
 public class frmInventarioReporte extends javax.swing.JFrame {
     DefaultTableModel dtm;
+String pdfFilePath = "D:\\ONEDRIVEHECTORUTP\\OneDrive - Universidad Tecnologica del Peru\\Reportes PDF";
+File file = new File(pdfFilePath);
+
     /**
      * Creates new form frmReporte
      */
@@ -50,10 +60,11 @@ public class frmInventarioReporte extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableModel = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         btnReporte = new javax.swing.JButton();
+        btnGenerarReportePDF = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,7 +74,7 @@ public class frmInventarioReporte extends javax.swing.JFrame {
 
         jButton1.setText("Buscar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableModel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null}
@@ -72,7 +83,7 @@ public class frmInventarioReporte extends javax.swing.JFrame {
                 "Insumos Por agotarse", "unidades Restantes"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableModel);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,6 +103,13 @@ public class frmInventarioReporte extends javax.swing.JFrame {
             }
         });
 
+        btnGenerarReportePDF.setText("Generar Reporte PDF");
+        btnGenerarReportePDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReportePDFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -101,8 +119,10 @@ public class frmInventarioReporte extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(31, 31, 31)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(148, 148, 148)
+                .addGap(18, 18, 18)
                 .addComponent(btnReporte)
+                .addGap(36, 36, 36)
+                .addComponent(btnGenerarReportePDF)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(48, 48, 48))
@@ -122,18 +142,19 @@ public class frmInventarioReporte extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addComponent(jButton1)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnReporte)
-                        .addGap(16, 16, 16)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnReporte)
+                            .addComponent(btnGenerarReportePDF))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(214, 214, 214))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -153,58 +174,101 @@ public class frmInventarioReporte extends javax.swing.JFrame {
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         // TODO add your handling code here:
-      
-    try {
-        // Configura tu conexión a la base de datos
-        Connection conn = DriverManager.getConnection("");
-        Statement stmt = conn.createStatement();
-        String Query = "SELECT * FROM INVENTARIO"; // Cambia la consulta según lo que necesites
-        ResultSet rs = stmt.executeQuery(Query);
+      // Crear una instancia del modelo para obtener los insumos
+    Modelo modelo = new Modelo();
+    
+    // Obtener la lista de insumos desde la base de datos
+        ArrayList<Insumo> insumos;
+        insumos = new ArrayList<>();
+    
+    // Crear el modelo de tabla para mostrar los insumos
+    DefaultTableModel tableModel = new DefaultTableModel();
+    tableModel.addColumn("Código Insumo");
+    tableModel.addColumn("Nombre Insumo");
+    tableModel.addColumn("Cantidad Insumo");
+    tableModel.addColumn("Categoría Insumo");
+    
+    // Rellenar el modelo de tabla con los datos de los insumos
+    for (Insumo insumo : insumos) {
+        Object[] rowData = {
+            insumo.getCodigo(),
+            insumo.getNombre(),
+            insumo.getCantidad(),
+            insumo.getCategoria()
+        };
+        tableModel.addRow(rowData);
+    }
+    
+    // Asignar el modelo a un JTable (o cualquier componente de tabla que uses)
+    JTable table = new JTable(tableModel);
+    
+    // Mostrar el reporte en un JScrollPane para poder visualizar la tabla
+    JScrollPane scrollPane = new JScrollPane(table);
+    JFrame reporteFrame = new JFrame("Reporte de Inventario");
+    reporteFrame.getContentPane().add(scrollPane);
+    reporteFrame.setSize(600, 400); // Ajustar el tamaño del frame
+    reporteFrame.setVisible(true); // Hacer visible la ventana con el reporte
+    }//GEN-LAST:event_btnReporteActionPerformed
 
-        // Crear el documento PDF
-        Document document = new Document();
-        String filePath = "reporte.pdf";
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+    private void btnGenerarReportePDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReportePDFActionPerformed
+        // TODO add your handling code here:
+           // Obtener los insumos desde la base de datos
+      Modelo modelo = new Modelo();
+    List<Insumo> insumos = new ArrayList<>();
+      
+    
+    
+    modelo.getInsumos();
+    
+    // Definir el nombre del archivo PDF
+    String pdfFilePath = "Reporte_Inventario_ZariSpa.pdf";
+    
+    // Crear el documento PDF
+    Document document = new Document();
+    try {
+        // Crear escritor de PDF
+        PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+        
+        // Abrir el documento
         document.open();
         
-        // Escribir el contenido del PDF
-        document.add(new Paragraph("Reporte de la base de datos"));
+        // Añadir título al PDF
+        document.add(new Paragraph("D:\\ONEDRIVEHECTORUTP\\OneDrive - Universidad Tecnologica del Peru\\Reportes PDF"));
+        document.add(new Paragraph("Fecha: " + new java.util.Date()));
         document.add(new Paragraph(" "));
         
-        while (rs.next()) {
-            // Suponiendo que tienes columnas 'id' y 'nombre' en tu tabla
-            String codigo_insumo = rs.getString("codigo_insumo");
-            String nombre_insumo = rs.getString("nombre_insumo");
-            document.add(new Paragraph("codigoInsumo: " + codigo_insumo + ", Nombre: " + nombre_insumo));
+        // Crear tabla con 4 columnas (correspondientes a los datos de la tabla INVENTARIO)
+        PdfPTable table = new PdfPTable(4);
+        table.setWidthPercentage(100);
+        
+        // Añadir los encabezados de la tabla
+        table.addCell("Código");
+        table.addCell("Nombre");
+        table.addCell("Cantidad");
+        table.addCell("Categoría");
+        
+        // Añadir los datos de los insumos
+        for (Insumo insumo : insumos) {
+            table.addCell(insumo.getCodigo());
+            table.addCell(insumo.getNombre());
+            table.addCell(String.valueOf(insumo.getCantidad()));
+            table.addCell(insumo.getCategoria());
         }
         
+        // Añadir la tabla al documento PDF
+        document.add(table);
+        
+        // Cerrar el documento
         document.close();
         
-        // Mostrar mensaje de éxito
-        JOptionPane.showMessageDialog(this, "Reporte generado exitosamente.");
+        // Mostrar un mensaje de éxito
+        JOptionPane.showMessageDialog(this, "Reporte PDF generado exitosamente en " + pdfFilePath);
         
-        // Abrir el PDF generado automáticamente
-        File file = new File(filePath);
-        if (file.exists()) {
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(file);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se puede abrir el archivo automáticamente.");
-            }
-        }
     } catch (Exception e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al generar el reporte: " + e.getMessage());
-    } finally {
-        try {
-            //if (rs != null) rs.close();
-            //if (stmt != null) stmt.close();
-            //if (conn != null) conn.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        JOptionPane.showMessageDialog(this, "Error al generar el reporte PDF: " + e.getMessage());
     }
-    }//GEN-LAST:event_btnReporteActionPerformed
+    }//GEN-LAST:event_btnGenerarReportePDFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,14 +307,15 @@ public class frmInventarioReporte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarReportePDF;
     private javax.swing.JButton btnReporte;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable tableModel;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
