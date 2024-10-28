@@ -15,10 +15,10 @@ import javax.swing.JOptionPane;
  *
  * @author Hector
  */
-public class frmInventarioRegistro extends javax.swing.JFrame {
+public class frmRegistroInsumos extends javax.swing.JFrame {
 
     /**
-     * Creates new form frmInventarioRegistro
+     * Creates new form frmRegistroInsumos
      */
     Controlador ctl= new Controlador();
     DefaultTableModel dtm;
@@ -27,7 +27,7 @@ public class frmInventarioRegistro extends javax.swing.JFrame {
     SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     Insumo insumo = new Insumo();
     
-    public frmInventarioRegistro() {
+    public frmRegistroInsumos() {
         initComponents();
          dtm= (DefaultTableModel) tablaDatos.getModel();
         
@@ -340,21 +340,23 @@ public class frmInventarioRegistro extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmInventarioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmInventarioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmInventarioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmInventarioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmInventarioRegistro().setVisible(true);
+                new frmRegistroInsumos().setVisible(true);
             }
         });
     }

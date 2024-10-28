@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-public class frmCitas_RegistroCitas extends javax.swing.JFrame {
+public class frmRegistroCitas extends javax.swing.JFrame {
     
   
     DefaultTableModel dtm;
     Object[] o = new Object[4];
-    public frmCitas_RegistroCitas() {
+    public frmRegistroCitas() {
         initComponents();
         dtm = (DefaultTableModel)tablaAmbientes.getModel();
     }
@@ -366,7 +366,7 @@ public class frmCitas_RegistroCitas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmCitas_RegistroCitas().setVisible(true);
+                new frmRegistroCitas().setVisible(true);
             }
         });
     }
