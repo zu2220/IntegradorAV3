@@ -6,16 +6,26 @@ package vista;
 import clases.Insumo;
 
 import javax.swing.table.DefaultTableModel;
-
+import com.itextpdf.text.Document;
+import javax.swing.text.*;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.*;
 import controlador.Controlador;
-
+import PDF.PDF;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Hector
  */
 public class frmInventarioReporte extends javax.swing.JFrame {
-
+    DefaultTableModel dtm;
     /**
      * Creates new form frmReporte
      */
@@ -43,6 +53,7 @@ public class frmInventarioReporte extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        btnReporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +85,13 @@ public class frmInventarioReporte extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
+        btnReporte.setText("Generar Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -83,6 +101,8 @@ public class frmInventarioReporte extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(31, 31, 31)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148)
+                .addComponent(btnReporte)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(48, 48, 48))
@@ -96,12 +116,18 @@ public class frmInventarioReporte extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnReporte)
+                        .addGap(16, 16, 16)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -124,6 +150,61 @@ public class frmInventarioReporte extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+      
+    try {
+        // Configura tu conexión a la base de datos
+        Connection conn = DriverManager.getConnection("");
+        Statement stmt = conn.createStatement();
+        String Query = "SELECT * FROM INVENTARIO"; // Cambia la consulta según lo que necesites
+        ResultSet rs = stmt.executeQuery(Query);
+
+        // Crear el documento PDF
+        Document document = new Document();
+        String filePath = "reporte.pdf";
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+        document.open();
+        
+        // Escribir el contenido del PDF
+        document.add(new Paragraph("Reporte de la base de datos"));
+        document.add(new Paragraph(" "));
+        
+        while (rs.next()) {
+            // Suponiendo que tienes columnas 'id' y 'nombre' en tu tabla
+            String codigo_insumo = rs.getString("codigo_insumo");
+            String nombre_insumo = rs.getString("nombre_insumo");
+            document.add(new Paragraph("codigoInsumo: " + codigo_insumo + ", Nombre: " + nombre_insumo));
+        }
+        
+        document.close();
+        
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(this, "Reporte generado exitosamente.");
+        
+        // Abrir el PDF generado automáticamente
+        File file = new File(filePath);
+        if (file.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se puede abrir el archivo automáticamente.");
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al generar el reporte: " + e.getMessage());
+    } finally {
+        try {
+            //if (rs != null) rs.close();
+            //if (stmt != null) stmt.close();
+            //if (conn != null) conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,6 +243,7 @@ public class frmInventarioReporte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReporte;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

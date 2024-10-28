@@ -4,26 +4,17 @@ import clases.Insumo;
 import clases.Inventario;
 import controlador.Controlador;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class frmModificarInsumo extends javax.swing.JFrame {
-
-    Controlador controlador= new Controlador();
-    
-public void setInsumoData(Insumo insumo) {
-    frmInventarioRegistro Registro= new frmInventarioRegistro();
-    
-        txtCodigo.setText(insumo.getCodigo());
-    txtNombre.setText(insumo.getNombre());
-    txtCantidad.setText(String.valueOf(insumo.getCantidad()));
-    txtFechaVencimiento.setText(String.valueOf(insumo.getFechavencimiento()));
-    cbxEstado.setSelectedItem(String.valueOf(insumo.getCategoria()));
-    
-
-}
-
-
+        DefaultTableModel dtm;
+        
+        Object[] o = new Object[4]; 
     public frmModificarInsumo() {
         initComponents();
+        dtm= (DefaultTableModel) tablaModificarInsumo.getModel();
     }
 
     /**
@@ -37,18 +28,14 @@ public void setInsumoData(Insumo insumo) {
 
         jPanel1 = new javax.swing.JPanel();
         lbCodigo = new javax.swing.JLabel();
-        lbNombre = new javax.swing.JLabel();
         lbCantidad = new javax.swing.JLabel();
-        lbFechaVencimiento = new javax.swing.JLabel();
-        lbCodigo4 = new javax.swing.JLabel();
-        cbxEstado = new javax.swing.JComboBox<>();
-        txtCodigo = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
+        txtCodigoInsumo = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
-        txtFechaVencimiento = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaModificarInsumo = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
+        btnReducir = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,15 +43,7 @@ public void setInsumoData(Insumo insumo) {
 
         lbCodigo.setText("Codigo");
 
-        lbNombre.setText("Nombre");
-
         lbCantidad.setText("Cantidad");
-
-        lbFechaVencimiento.setText("FechaVencimiento");
-
-        lbCodigo4.setText("Estado de Insumo");
-
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perecible", "No Perecible" }));
 
         tablaModificarInsumo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,7 +53,7 @@ public void setInsumoData(Insumo insumo) {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Código", "Nombre", "Cantidad", "Categoría"
             }
         ));
         jScrollPane1.setViewportView(tablaModificarInsumo);
@@ -86,65 +65,65 @@ public void setInsumoData(Insumo insumo) {
             }
         });
 
+        btnReducir.setText("Reducir");
+        btnReducir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReducirActionPerformed(evt);
+            }
+        });
+
+        btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(lbCodigo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnListar)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbCodigo4)
-                            .addComponent(lbCodigo)
-                            .addComponent(lbNombre)
-                            .addComponent(lbCantidad)
-                            .addComponent(lbFechaVencimiento))
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                            .addComponent(txtCantidad)
-                            .addComponent(txtNombre)
-                            .addComponent(txtCodigo))
-                        .addGap(64, 64, 64)
-                        .addComponent(btnAgregar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(230, Short.MAX_VALUE))
+                        .addComponent(txtCodigoInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
+                        .addComponent(lbCantidad)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)
+                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReducir))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
+                        .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbCodigo)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbNombre)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(btnAgregar)))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbCantidad)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbFechaVencimiento)
-                    .addComponent(txtFechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbCodigo4)
-                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                            .addComponent(txtCodigoInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbCodigo)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbCantidad)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAgregar)
+                                .addComponent(btnReducir)))
+                        .addGap(77, 77, 77)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
+                .addComponent(btnListar)
+                .addGap(0, 363, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,7 +146,45 @@ public void setInsumoData(Insumo insumo) {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+          String codigoInsumo= txtCodigoInsumo.getText();
+        Double cantidad= Double.parseDouble(txtCantidad.getText());
+        Controlador control= new Controlador();
+        boolean flag= control.AñadirCantidadInsumo(cantidad, codigoInsumo);
+          if(flag== false){
+            JOptionPane.showMessageDialog(this, "Si se pudo aumentar el Stock");
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        // TODO add your handling code here:
+        String codigoInsumo = txtCodigoInsumo.getText();
+        Controlador controlador = new Controlador();
+        List<Insumo> insumos = new ArrayList<>();
+        insumos = controlador.getInsumos();
+        
+        //Limpiamos la tabla
+        dtm.setRowCount(0);
+        
+        //agregamos filas
+        for(Insumo aux:insumos){
+            o[0]=aux.getCodigo();
+            o[1]=aux.getNombre();
+            o[2]=aux.getCantidad();
+            o[3]= aux.getCategoria();
+            dtm.addRow(o);
+        }
+    }//GEN-LAST:event_btnListarActionPerformed
+
+    private void btnReducirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReducirActionPerformed
+        // TODO add your handling code here:
+        String codigoInsumo= txtCodigoInsumo.getText();
+        Double cantidad= Double.parseDouble(txtCantidad.getText());
+        Controlador control= new Controlador();
+        boolean flag= control.ReducirStock(codigoInsumo, cantidad);
+        if(flag){
+            JOptionPane.showMessageDialog(this, "No se pudo reducir el Stock");
+        }
+    }//GEN-LAST:event_btnReducirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,18 +223,14 @@ public void setInsumoData(Insumo insumo) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JComboBox<String> cbxEstado;
+    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnReducir;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbCantidad;
     private javax.swing.JLabel lbCodigo;
-    private javax.swing.JLabel lbCodigo4;
-    private javax.swing.JLabel lbFechaVencimiento;
-    private javax.swing.JLabel lbNombre;
     private javax.swing.JTable tablaModificarInsumo;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtFechaVencimiento;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtCodigoInsumo;
     // End of variables declaration//GEN-END:variables
 }

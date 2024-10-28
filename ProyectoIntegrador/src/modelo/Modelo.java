@@ -15,10 +15,35 @@ import java.util.List;
 
 
 public class Modelo {
+    
+    public List<Insumo> getInsumos(){
+        List<Insumo> insumos = new ArrayList<>();
+        
+        try{
+            String query = "select codigo_insumo,nombre_insumo,cantidad_insumo,categoria_insumo ";
+                   query+= "from INVENTARIO";
+            PreparedStatement pstmt = DataSource().prepareStatement(query);
+           
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                Insumo insumo = new Insumo();
+                insumo.setCodigo(rs.getString(1));
+                insumo.setNombre(rs.getString(2));
+                insumo.setCantidad(rs.getDouble(3));
+                insumo.setCategoria(rs.getString(4));
+                insumos.add(insumo);
+            }
+        }catch(Exception ex){System.out.println(ex);}
+        return insumos;
+    }
+    
     public boolean AgregarInsumo(Insumo insumo){
      boolean flag= false ; 
      try{
       String Query= " INSERT INTO INVENTARIO values(?, ?, ?, ?, ?, ?)";
+      
             PreparedStatement  stmt = DataSource().prepareStatement(Query);
             
             stmt.setString(1,insumo.getCodigo());
@@ -39,15 +64,43 @@ public class Modelo {
         } 
         return flag;
        
-        
-        
- 
-    
-   
     
     }
     
-    
+   public boolean ReducirStock(String codigoInsumo, double cantidadInsumo){
+       boolean flag= false;
+       String Query= "exec ReducirStock ?, ?";
+       
+         try{
+         PreparedStatement  stmt = DataSource().prepareStatement(Query);
+            stmt.setDouble(1, cantidadInsumo);
+            stmt.setString(2, codigoInsumo);
+            flag= stmt.execute();
+            
+         }
+         catch(SQLException ex){
+             System.out.println(ex.getMessage());
+         }
+       return flag;
+   }  
+ 
+   public boolean AñadirCantidadInsumo(Double cantidad, String codigoInsumo){
+       boolean flag= false;
+       String Query= "exec AñadirCantidadInsumo ?, ?";
+       Query+= "select* from INVENTARIO";
+       try{
+           PreparedStatement  stmt = DataSource().prepareStatement(Query);
+           stmt.setDouble(1, cantidad);
+            stmt.setString(2, codigoInsumo);
+            flag= stmt.execute();
+            
+       }catch(SQLException ex){
+       
+       System.out.println(ex.getMessage()); 
+       }
+       
+       return flag;
+   }
     
     
     /*
