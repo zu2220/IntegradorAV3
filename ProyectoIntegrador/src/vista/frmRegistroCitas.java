@@ -27,6 +27,7 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         dtm = (DefaultTableModel)tablaAmbientes.getModel();
         this.menu = menu;
         llenarCbxTipoAmbiente();
+        llenarCbxServicio();
 
     }
 
@@ -88,6 +89,11 @@ public class frmRegistroCitas extends javax.swing.JFrame {
                 "Nombre ambiente", "Disponibilidad en horas", "Hora inicio", "Hora termino"
             }
         ));
+        tablaAmbientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAmbientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaAmbientes);
 
         panelRegistroCitas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 650, 99));
@@ -421,9 +427,16 @@ public class frmRegistroCitas extends javax.swing.JFrame {
                 cbxServicio.addItem(aux);
             }
         }else
-            JOptionPane.showMessageDialog(null, "Selecciona un ambiente y una fecha");
+            JOptionPane.showMessageDialog(this, "Selecciona un ambiente y una fecha");
             
     }//GEN-LAST:event_cbxServicioMouseClicked
+
+    private void tablaAmbientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmbientesMouseClicked
+        // TODO add your handling code here:
+        int row = tablaAmbientes.getSelectedRow();
+        txtHoraInicio.setText((String) dtm.getValueAt(row, 2));
+        txtHoraTermino.setText((String)dtm.getValueAt(row, 3));
+    }//GEN-LAST:event_tablaAmbientesMouseClicked
 
     
 
@@ -480,7 +493,6 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         for(ServicioEspecifico aux: servicios){
             if(aux.getTipoServicio().equalsIgnoreCase(tipoServicio)){
                 sePorTipo.add(aux.getNombre());
-                System.out.println(aux);
             }
                 
         }
