@@ -2,7 +2,11 @@
 package modelo;
 
 import clases.Ambiente;
+import clases.AmbienteDisponible;
 import clases.Insumo;
+import clases.InsumoPorAgotarse;
+import clases.InsumoPorCaducar;
+import clases.ServicioEspecifico;
 import clases.ServicioSolicitado;
 import static conexionDB.DataSource.DataSource;
 import java.sql.SQLException;
@@ -50,7 +54,7 @@ public class Modelo {
             stmt.setString(2, insumo.getNombre());
             stmt.setDouble(3, insumo.getCantidad());
             stmt.setString(4, insumo.getCategoria());
-            stmt.setString(5, insumo.getFechavencimiento());
+            stmt.setDate(5, insumo.getFechavencimiento());
             stmt.setDouble(6, insumo.getPrecio());
             
             
@@ -101,6 +105,47 @@ public class Modelo {
        
        return flag;
    }
+   
+   public List<InsumoPorAgotarse> getInsumosPorAgotarse(){
+       List<InsumoPorAgotarse> insumosPorAgotarse = new ArrayList<>();
+       
+       try{
+           String query = "";
+           PreparedStatement pstmt = DataSource().prepareStatement(query);
+           ResultSet rs = pstmt.executeQuery();
+           
+           while(rs.next()){
+               InsumoPorAgotarse insumo = new InsumoPorAgotarse();
+               insumo.setNombre(rs.getString(1));
+               insumo.setCantidadRestante(rs.getDouble(2));
+               insumosPorAgotarse.add(insumo);
+           }
+           
+       }catch(Exception ex){System.out.println(ex);}
+       
+       return insumosPorAgotarse;
+   }
+   
+   public List<InsumoPorCaducar> getInsumosPorCaducar(){
+       List<InsumoPorCaducar> insumosPorCaducar = new ArrayList<>();
+       
+       try{
+           String query = "";
+           PreparedStatement pstmt = DataSource().prepareStatement(query);
+           ResultSet rs = pstmt.executeQuery();
+           
+           while(rs.next()){
+               InsumoPorCaducar insumo = new InsumoPorCaducar();
+               insumo.setNombre(rs.getString(1));
+               insumo.setDiasRestantes(rs.getInt(2));
+               insumosPorCaducar.add(insumo);
+           }
+           
+       }catch(Exception ex){System.out.println(ex);}
+       
+       return insumosPorCaducar;
+       
+   }
     
     
     /*
@@ -109,22 +154,24 @@ public class Modelo {
     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     */
     
-    public List<Ambiente> getAmbientes(String tipo_ambiente){
-        List<Ambiente> ambientes = new ArrayList<>();
+    public List<AmbienteDisponible> getAmbientesDisponibles(String tipo_ambiente, java.sql.Date fecha){
+        List<AmbienteDisponible> ambientes = new ArrayList<>();
         
         try{
-            String query = "select* from Ambientes ";
-                   query+= "where tipo_ambiente='?'";
+            String query = "exec dbo.ObtenerDisponibilidadPorTipoAmbiente ?,?";
             PreparedStatement pstmt = DataSource().prepareStatement(query);
             
-            pstmt.setString(1, tipo_ambiente);
+            pstmt.setDate(1, fecha);
+            pstmt.setString(2, tipo_ambiente);
             ResultSet rs = pstmt.executeQuery();
             
             //Recuperación de ambientes
             while(rs.next()){
-                Ambiente ambiente = new Ambiente();
-                ambiente.setNombreAmbiente(rs.getString(1));
-                ambiente.setTipodeAmbiente(rs.getString(2));
+                AmbienteDisponible ambiente = new AmbienteDisponible();
+                ambiente.setNombre_ambiente(rs.getString(1));
+                ambiente.setInicio_disponible(rs.getTime(2));
+                ambiente.setFin_disponible(rs.getTime(3));
+                ambiente.setDuracion_horas(rs.getDouble(4));
                 
                 ambientes.add(ambiente);
             }
@@ -136,7 +183,7 @@ public class Modelo {
         List<ServicioSolicitado> servicios = new ArrayList<>();
         
         try{
-            String query = "select* ServiciosSolicitados where tipo_servicio =?";
+            String query = "select* ServiciosSolicitados where tipo_servicio = ?";
             PreparedStatement pstmt = DataSource().prepareStatement(query);
             pstmt.setString(1, tipo_servicio);
             ResultSet rs = pstmt.executeQuery();
@@ -151,4 +198,57 @@ public class Modelo {
         }catch(Exception ex){System.out.println(ex);}
         return servicios;
     }
+    public List<String> getTiposAmbiente(){
+        List<String> tiposAmbiente = new ArrayList<>();
+        try{
+            String query = "SELECT DISTINCT tipo_ambiente FROM Ambiente";
+            PreparedStatement stmt = DataSource().prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                String tipoAmbiente = rs.getString(1);
+                tiposAmbiente.add(tipoAmbiente);
+            }
+        }catch(Exception ex){System.out.println(ex);}
+        return tiposAmbiente;
+    }
+    public List<ServicioEspecifico> getServicios(){
+        List<ServicioEspecifico> servicios = new ArrayList<>();
+        
+        try{
+            String query = "select* from Servicio";
+            PreparedStatement pstmt = DataSource().prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                ServicioEspecifico servicio = new ServicioEspecifico();
+                servicio.setNombre(rs.getString(1));
+                servicio.setTipoServicio(rs.getString(2));
+                servicio.setPrecio(rs.getDouble(3));
+                servicios.add(servicio);
+            }
+        }catch(Exception ex){System.out.println(ex);}
+        
+        return servicios;
+    }
+    
+    /*
+    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<METODOS GENERALES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    */
+    
+    public boolean validarCredenciales(String user_name, String password){
+        boolean flag = false;
+        try{
+            String query = "select* from Users where nombre_usuario = ? and contrasena_usuario = ?";
+            PreparedStatement pstmt = DataSource().prepareCall(query);
+            pstmt.setString(1, user_name);
+            pstmt.setString(2,password);
+            flag = pstmt.execute();
+        }catch(Exception ex){System.out.println(ex);}
+        
+        return flag;
+    }
+    
 }

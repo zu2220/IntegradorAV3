@@ -1,27 +1,29 @@
 
 package clases;
 
+import java.sql.Date;
 
-public class InsumoRequerido {
-    private Insumo insumo;
+
+public class InsumoRequerido extends Insumo {
     private double cantidadUsada;
 
     public InsumoRequerido() {
     }
 
-    public InsumoRequerido(Insumo insumo, double cantidadUsada) {
-        this.insumo = insumo;
+    public InsumoRequerido(double cantidadUsada) {
         this.cantidadUsada = cantidadUsada;
     }
 
-    public Insumo getInsumo() {
-        return insumo;
+    public InsumoRequerido(double cantidadUsada, String nombre, double cantidad, Date fechavencimiento, double precio, String Categoria, String codigo) {
+        super(nombre, cantidad, fechavencimiento, precio, Categoria, codigo);
+        this.cantidadUsada = cantidadUsada;
     }
 
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
+    public InsumoRequerido(double cantidadUsada, String nombre, int cantidad) {
+        super(nombre, cantidad);
+        this.cantidadUsada = cantidadUsada;
     }
-
+    
     public double getCantidadUsada() {
         return cantidadUsada;
     }

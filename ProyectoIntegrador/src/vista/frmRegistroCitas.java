@@ -2,10 +2,10 @@
 package vista;
 
 import clases.Ambiente;
+import clases.AmbienteDisponible;
+import clases.ServicioEspecifico;
 import clases.ServicioSolicitado;
 import controlador.Controlador;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,12 +15,19 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmRegistroCitas extends javax.swing.JFrame {
     
-  
+    frmMenuGeneral menu;
     DefaultTableModel dtm;
+    DefaultTableModel dtm2;
     Object[] o = new Object[4];
-    public frmRegistroCitas() {
+    
+    //Arrays con los valores de los cbx
+    List<ServicioEspecifico> servicios = new ArrayList<>();
+    public frmRegistroCitas(frmMenuGeneral menu) {
         initComponents();
         dtm = (DefaultTableModel)tablaAmbientes.getModel();
+        this.menu = menu;
+        llenarCbxTipoAmbiente();
+
     }
 
     /**
@@ -63,6 +70,7 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         btnEditarCliente = new javax.swing.JButton();
         btnEliminarCliente = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,7 +92,11 @@ public class frmRegistroCitas extends javax.swing.JFrame {
 
         panelRegistroCitas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 650, 99));
 
-        cbxTipoAmbiente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Baños medicinales", "Masajes/Terapias", "Tratamientos corporales", "Tratamientos faciales" }));
+        cbxTipoAmbiente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbxTipoAmbienteMouseClicked(evt);
+            }
+        });
         panelRegistroCitas.add(cbxTipoAmbiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 195, -1));
 
         jdcFecha.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -137,7 +149,11 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         jLabel5.setText("Nombre del servicio:");
         panelRegistroCitas.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
-        cbxServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxServicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbxServicioMouseClicked(evt);
+            }
+        });
         panelRegistroCitas.add(cbxServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 140, -1));
 
         jLabel6.setText("H. Inicio:");
@@ -214,6 +230,11 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         panelRegistroCitas.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 1130, 110));
 
         btnAgregarCliente.setText("Agregar");
+        btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarClienteActionPerformed(evt);
+            }
+        });
         panelRegistroCitas.add(btnAgregarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 80, -1));
 
         btnEditarCliente.setText("Editar");
@@ -229,6 +250,14 @@ public class frmRegistroCitas extends javax.swing.JFrame {
             }
         });
         panelRegistroCitas.add(btnOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 50, -1));
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegresarMouseClicked(evt);
+            }
+        });
+        panelRegistroCitas.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -327,20 +356,31 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         // TODO add your handling code here:
         String tipo_ambiente = cbxTipoAmbiente.getSelectedItem().toString();
         Date fecha = jdcFecha.getDate();
-        SimpleDateFormat formato_fecha = new SimpleDateFormat("dd/MM/yyyy");
-        String cadena_fecha = formato_fecha.format(fecha);
+        long fechaLong = fecha.getTime();
+        java.sql.Date fechaSql = new java.sql.Date(fechaLong);
+        
         
         List<Ambiente> ambientes = new ArrayList<>();
         List<ServicioSolicitado> servicios_solicitados = new ArrayList<>();
-        if(cadena_fecha != null && tipo_ambiente!=null){
+        if(fecha != null && tipo_ambiente!=null){
             Controlador controlador = new Controlador();
             
             //Obtenemos los ambientes
-            ambientes = controlador.getAmbientes(tipo_ambiente);
-            //obtenemos las citas
-            servicios_solicitados = controlador.getServiciosPorTipo(tipo_ambiente);
+            List<AmbienteDisponible> ambientesDisponibles = controlador.getAmbientesDisponibles(tipo_ambiente,fechaSql);
             
-        }else if(cadena_fecha==null)
+            //Limpiamos la tabla
+            dtm.setRowCount(0);
+            
+            //Llenamos la tabla
+            for(AmbienteDisponible aux: ambientesDisponibles){
+                o[0] = aux.getNombre_ambiente();
+                o[1] = aux.getDuracion_horas();
+                o[2] = aux.getInicio_disponible();
+                o[3] = aux.getFin_disponible();
+                dtm.addRow(o);
+            }
+            
+        }else if(fecha==null)
             JOptionPane.showMessageDialog(null, "Seleccionar fecha");
         else
             JOptionPane.showMessageDialog(null, "Seleccionar el tipo de ambiente");
@@ -350,26 +390,42 @@ public class frmRegistroCitas extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnOKActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-    
-        //</editor-fold>
-        //</editor-fold>
+    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        menu.setVisible(true);
+        
+    }//GEN-LAST:event_btnRegresarMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmRegistroCitas().setVisible(true);
+    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
+        // TODO add your handling code here:
+        frmRegistroDatosCliente cliente = new frmRegistroDatosCliente(this);
+        this.dispose();
+        cliente.setVisible(true);
+    }//GEN-LAST:event_btnAgregarClienteActionPerformed
+
+    private void cbxTipoAmbienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxTipoAmbienteMouseClicked
+        // TODO add your handling code here: 
+    }//GEN-LAST:event_cbxTipoAmbienteMouseClicked
+
+    private void cbxServicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxServicioMouseClicked
+        // TODO add your handling code here:
+        if(dtm.getRowCount()>0){
+            String tipoServicio = cbxTipoAmbiente.getSelectedItem().toString();
+            List<String> sePorTipo = getServiciosPorTipo(tipoServicio);
+            
+            //LimpiamosCbx
+            cbxServicio.removeAllItems();
+            //Llenamos Cbx
+            for(String aux: sePorTipo){
+                cbxServicio.addItem(aux);
             }
-        });
-    }
+        }else
+            JOptionPane.showMessageDialog(null, "Selecciona un ambiente y una fecha");
+            
+    }//GEN-LAST:event_cbxServicioMouseClicked
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarCliente;
@@ -379,6 +435,7 @@ public class frmRegistroCitas extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarServicio;
     private javax.swing.JButton btnOK;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cbxAmbienteReservar;
     private javax.swing.JComboBox<String> cbxServicio;
     private javax.swing.JComboBox<String> cbxTerapeuta;
@@ -404,4 +461,29 @@ public class frmRegistroCitas extends javax.swing.JFrame {
     private javax.swing.JTextField txtHoraInicio;
     private javax.swing.JTextField txtHoraTermino;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarCbxTipoAmbiente() {
+        Controlador controlador = new Controlador();
+        List<String> tipos_ambiente = controlador.getTiposAmbiente();
+        for(String aux: tipos_ambiente){
+            cbxTipoAmbiente.addItem(aux);
+        }
+    }
+
+    private void llenarCbxServicio() {
+        Controlador controlador = new Controlador();
+        this.servicios = controlador.getServicios();
+    }
+
+    private List<String> getServiciosPorTipo(String tipoServicio) {
+        List<String> sePorTipo = new ArrayList<>();
+        for(ServicioEspecifico aux: servicios){
+            if(aux.getTipoServicio().equalsIgnoreCase(tipoServicio)){
+                sePorTipo.add(aux.getNombre());
+                System.out.println(aux);
+            }
+                
+        }
+        return sePorTipo;
+    }
 }

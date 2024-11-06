@@ -10,6 +10,7 @@ public class ServicioEspecifico{
     private Double precio;
     private InsumoRequerido[] insumoRequerido;
     
+    
     public ServicioEspecifico(){
     
     }
@@ -19,9 +20,9 @@ public class ServicioEspecifico{
         this.tipoServicio = tipoServicio;
         this.precio = precio;
         this.insumoRequerido = insumoRequerido;
+       
     }
 
- 
 
     public String getNombre() {
         return Nombre;
@@ -54,6 +55,9 @@ public class ServicioEspecifico{
     public void setInsumoRequerido(InsumoRequerido[] insumoRequerido) {
         this.insumoRequerido = insumoRequerido;
     }
+
+   
+    
 }
 
 

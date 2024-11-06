@@ -2,12 +2,12 @@
 package clases;
 
 public abstract class Persona {
+    private int DNI;
     private String nombre;
     private String apellido1;
     private String apellido2;
     private String sexo;
     private String fechaNacimiento; 
-    private int DNI;
     private int NumeroCelular;
 
     public Persona() {

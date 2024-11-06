@@ -5,18 +5,16 @@ import java.util.ArrayList;
 
 public class PaqueteServicio {
     private String codigoPaquete;
-    private int cantidadServicios;
     private Cliente cliente;       
     private ArrayList<ServicioSolicitado> servicios;
-    private String estado;
+    private boolean estado;
     
     public PaqueteServicio(){
     
     }
 
-    public PaqueteServicio(String codigoPaquete, int cantidadServicios, Cliente cliente, ArrayList<ServicioSolicitado> servicios, String estado) {
+    public PaqueteServicio(String codigoPaquete, Cliente cliente, ArrayList<ServicioSolicitado> servicios, boolean estado) {
         this.codigoPaquete = codigoPaquete;
-        this.cantidadServicios = cantidadServicios;
         this.cliente = cliente;
         this.servicios = servicios;
         this.estado = estado;
@@ -28,14 +26,6 @@ public class PaqueteServicio {
 
     public void setCodigoPaquete(String codigoPaquete) {
         this.codigoPaquete = codigoPaquete;
-    }
-
-    public int getCantidadServicios() {
-        return cantidadServicios;
-    }
-
-    public void setCantidadServicios(int cantidadServicios) {
-        this.cantidadServicios = cantidadServicios;
     }
 
     public Cliente getCliente() {
@@ -54,11 +44,11 @@ public class PaqueteServicio {
         this.servicios = servicios;
     }
 
-    public String getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
     

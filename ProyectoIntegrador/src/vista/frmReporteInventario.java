@@ -32,9 +32,10 @@ import java.util.List;
  * @author Hector
  */
 public class frmReporteInventario extends javax.swing.JFrame {
+    frmMenuGeneral menu;
     DefaultTableModel dtm;
-String pdfFilePath = "D:\\ONEDRIVEHECTORUTP\\OneDrive - Universidad Tecnologica del Peru\\Reportes PDF";
-File file = new File(pdfFilePath);
+    String pdfFilePath = "D:\\ONEDRIVEHECTORUTP\\OneDrive - Universidad Tecnologica del Peru\\Reportes PDF";
+    File file = new File(pdfFilePath);
 
     /**
      * Creates new form frmReporte
@@ -42,8 +43,9 @@ File file = new File(pdfFilePath);
     
    
     
-    public frmReporteInventario() {
+    public frmReporteInventario(frmMenuGeneral menu) {
         initComponents();
+        this.menu = menu;
     }
 
     /**
@@ -56,30 +58,21 @@ File file = new File(pdfFilePath);
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtBuscar = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableModel = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        btnReporte = new javax.swing.JButton();
         btnGenerarReportePDF = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setText("Buscar");
-
-        btnBuscar.setText("Buscar");
 
         tableModel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Insumos Por agotarse", "unidades Restantes"
+                "Insumos por agotarse", "Unidades restantes"
             }
         ));
         jScrollPane1.setViewportView(tableModel);
@@ -89,17 +82,10 @@ File file = new File(pdfFilePath);
 
             },
             new String [] {
-                "Insumos por Vencer", "Dias Restantes para su vencimiento"
+                "Insumos por vencer", "#Días para su vencimiento"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
-
-        btnReporte.setText("Generar Reporte");
-        btnReporte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReporteActionPerformed(evt);
-            }
-        });
 
         btnGenerarReportePDF.setText("Generar Reporte PDF");
         btnGenerarReportePDF.addActionListener(new java.awt.event.ActionListener() {
@@ -108,52 +94,45 @@ File file = new File(pdfFilePath);
             }
         });
 
+        btnRegresar.setText("Regresar");
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegresarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReporte)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGenerarReportePDF)
-                        .addGap(57, 57, 57))
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(31, 31, 31)
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(btnBuscar))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(77, 77, 77)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(321, 321, 321)
+                        .addComponent(btnGenerarReportePDF))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(355, 355, 355)
+                        .addComponent(btnRegresar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(115, 115, 115)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGenerarReportePDF)
-                            .addComponent(btnReporte))
-                        .addGap(74, 74, 74))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                        .addContainerGap())))
+                .addGap(61, 61, 61)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(btnGenerarReportePDF)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(btnRegresar)
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,62 +143,25 @@ File file = new File(pdfFilePath);
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
-      // Crear una instancia del modelo para obtener los insumos
-    Modelo modelo = new Modelo();
-    
-    // Obtener la lista de insumos desde la base de datos
-        ArrayList<Insumo> insumos;
-        insumos = new ArrayList<>();
-    
-    // Crear el modelo de tabla para mostrar los insumos
-    DefaultTableModel tableModel = new DefaultTableModel();
-    tableModel.addColumn("Código Insumo");
-    tableModel.addColumn("Nombre Insumo");
-    tableModel.addColumn("Cantidad Insumo");
-    tableModel.addColumn("Categoría Insumo");
-    
-    // Rellenar el modelo de tabla con los datos de los insumos
-    for (Insumo insumo : insumos) {
-        Object[] rowData = {
-            insumo.getCodigo(),
-            insumo.getNombre(),
-            insumo.getCantidad(),
-            insumo.getCategoria()
-        };
-        tableModel.addRow(rowData);
-    }
-    
-    // Asignar el modelo a un JTable (o cualquier componente de tabla que uses)
-    JTable table = new JTable(tableModel);
-    
-    // Mostrar el reporte en un JScrollPane para poder visualizar la tabla
-    JScrollPane scrollPane = new JScrollPane(table);
-    JFrame reporteFrame = new JFrame("Reporte de Inventario");
-    reporteFrame.getContentPane().add(scrollPane);
-    reporteFrame.setSize(600, 400); // Ajustar el tamaño del frame
-    reporteFrame.setVisible(true); // Hacer visible la ventana con el reporte
-    }//GEN-LAST:event_btnReporteActionPerformed
-
     private void btnGenerarReportePDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReportePDFActionPerformed
         // TODO add your handling code here:
            // Obtener los insumos desde la base de datos
-      Modelo modelo = new Modelo();
-    List<Insumo> insumos = new ArrayList<>();
+    
+    Controlador controlador = new Controlador();
+    List<Insumo> insumos = controlador.getInsumos();
       
     
     
-    modelo.getInsumos();
+    
     
     // Definir el nombre del archivo PDF
-    String pdfFilePath = "Reporte_Inventario_ZariSpa.pdf";
+    String pdfFilePath = "C:\\Users\\oscar\\OneDrive\\Documentos\\CICLO VI\\Integrador I\\INTEGRADOR-AV3\\Reportes PDF\\Reportes_PDF.pdf";
     
     // Crear el documento PDF
     Document document = new Document();
@@ -231,7 +173,7 @@ File file = new File(pdfFilePath);
         document.open();
         
         // Añadir título al PDF
-        document.add(new Paragraph("D:\\ONEDRIVEHECTORUTP\\OneDrive - Universidad Tecnologica del Peru\\Reportes PDF"));
+        document.add(new Paragraph("Reporte de Inventario Insumos por agotarse - ZariSpa"));
         document.add(new Paragraph("Fecha: " + new java.util.Date()));
         document.add(new Paragraph(" "));
         
@@ -268,54 +210,21 @@ File file = new File(pdfFilePath);
     }
     }//GEN-LAST:event_btnGenerarReportePDFActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        menu.setVisible(true);
+    }//GEN-LAST:event_btnRegresarMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmReporteInventario().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGenerarReportePDF;
-    private javax.swing.JButton btnReporte;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable tableModel;
-    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

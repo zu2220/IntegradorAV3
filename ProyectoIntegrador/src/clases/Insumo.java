@@ -3,26 +3,17 @@ package clases;
 import java.util.Date;
 
 public class Insumo {
-private String nombre;
-private double cantidad;
-private String fechavencimiento;
-private double precio;
-private String Categoria;
-private String codigo;
-    
+    private String codigo;
+    private String nombre;
+    private String Categoria;
+    private java.sql.Date fechavencimiento;
+    private double cantidad;
+    private double precio;
 
-
-    public Insumo(String nombre, double cantidad, Date fecha2,double precio, String Categoria, String codigo) {
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.Categoria = Categoria;
-        this.codigo = codigo;
+    public Insumo() {
     }
-    
-    
 
-    public Insumo(String nombre, double cantidad, String fechavencimiento, double precio, String Categoria, String codigo) {
+    public Insumo(String nombre, double cantidad, java.sql.Date fechavencimiento, double precio, String Categoria, String codigo) {
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.fechavencimiento = fechavencimiento;
@@ -30,7 +21,9 @@ private String codigo;
         this.Categoria = Categoria;
         this.codigo = codigo;
     }
-
+    
+    
+    
     public String getCodigo() {
         return codigo;
     }
@@ -48,24 +41,14 @@ private String codigo;
         this.Categoria = Categoria;
     }
 
-    
-    
-    public Insumo(String nombre, int cantidad, String fechavencimiento, double precio, String Categoria) {
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.fechavencimiento = fechavencimiento;
-        this.precio = precio;
-        this.Categoria = Categoria;
-    }
-    
-    
-    public String getFechavencimiento() {
+    public java.sql.Date getFechavencimiento() {
         return fechavencimiento;
     }
 
-    public void setFechavencimiento(String fechavencimiento) {
+    public void setFechavencimiento(java.sql.Date fechavencimiento) {
         this.fechavencimiento = fechavencimiento;
     }
+
 
     public double getPrecio() {
         return precio;
@@ -96,9 +79,7 @@ private String codigo;
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
-    public Insumo(){
     
-    }
     
     
     /*

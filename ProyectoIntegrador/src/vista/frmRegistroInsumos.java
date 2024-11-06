@@ -17,20 +17,15 @@ import javax.swing.JOptionPane;
  */
 public class frmRegistroInsumos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmRegistroInsumos
-     */
+    frmMenuInventario menuInventario;
     Controlador ctl= new Controlador();
     DefaultTableModel dtm;
-    Object[] tabla= new Object[7];
-    Date dia, mes, año;
-    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-    Insumo insumo = new Insumo();
+    Object[] tabla= new Object[6];
     
-    public frmRegistroInsumos() {
+    public frmRegistroInsumos(frmMenuInventario menuInventario) {
         initComponents();
-         dtm= (DefaultTableModel) tablaDatos.getModel();
-        
+        dtm= (DefaultTableModel) tablaDatos.getModel();
+        this.menuInventario = menuInventario;
          
     }
 
@@ -49,7 +44,6 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
         jCalendar2 = new com.toedter.calendar.JCalendar();
         jPanel1 = new javax.swing.JPanel();
         btnInsertar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -65,12 +59,13 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
         txtPrecio = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
         cbxCategoria = new javax.swing.JComboBox<>();
-        btnTraspaso = new javax.swing.JButton();
         jdcFechaVencimiento = new com.toedter.calendar.JDateChooser();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnInsertar.setText("Insertar");
         btnInsertar.addActionListener(new java.awt.event.ActionListener() {
@@ -78,12 +73,13 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
                 btnInsertarActionPerformed(evt);
             }
         });
-
-        jButton2.setText("Cerrar");
+        jPanel1.add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, -1, -1));
 
         jButton3.setText("Borrar");
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 140, 70, -1));
 
-        jButton4.setText("Actualizar");
+        jButton4.setText("Editar");
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 100, 70, -1));
 
         tablaDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,142 +91,59 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaDatos);
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 240, 530, 163));
+
         jLabel1.setText("Codigo de Producto");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, -1, -1));
 
         jLabel2.setText("Nombre");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
 
         jLabel3.setText("Categoria");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, -1, -1));
 
         jLabel4.setText("Fecha de Vencimiento");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
 
         jLabel5.setText("Precio");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, -1));
 
         jLabel6.setText("Cantidad");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, -1, -1));
+        jPanel1.add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, 167, -1));
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
             }
         });
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 50, 167, -1));
+        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 167, -1));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, 167, -1));
 
-        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perecible", "NoPerecible" }));
+        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perecible", "No Perecible" }));
+        jPanel1.add(cbxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 170, -1));
+        jPanel1.add(jdcFechaVencimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, 170, -1));
 
-        btnTraspaso.setText("Traspasar Datos");
-        btnTraspaso.addActionListener(new java.awt.event.ActionListener() {
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTraspasoActionPerformed(evt);
+                btnRegresarActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5))))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jdcFechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(13, 13, 13)
-                                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jButton3))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jButton2))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(76, 76, 76)
-                                            .addComponent(btnInsertar)))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnTraspaso))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(122, 122, 122)
-                                        .addComponent(jButton4))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(275, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInsertar))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jButton3)
-                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jButton4)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnTraspaso)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel6)
-                                .addGap(30, 30, 30))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jdcFechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 273, Short.MAX_VALUE))))
-        );
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 942, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -241,69 +154,31 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
         String codigoProducto=txtCodigoProducto.getText();
         String nombre=txtNombre.getText();
         String categoria=cbxCategoria.getSelectedItem().toString();
-        String fecha= new String();
+        long fechaLong=0;
         Date FechaVencimiento= jdcFechaVencimiento.getDate();
-    if(FechaVencimiento!= null){
-      categoria= "  Perecible";
-    }
-    else{
-        categoria= " No Perecible";
-   }
-    //Fvo: Formato FechaVencimiento
-       SimpleDateFormat formatoFvo= new SimpleDateFormat("DD/MM/YYYY");
-       SimpleDateFormat formatoDia = new SimpleDateFormat("DD");    
-       SimpleDateFormat formatoMes = new SimpleDateFormat("MM");
-       SimpleDateFormat formatoAño = new SimpleDateFormat("YYYY");
-       String fvo_cadena= formatoFvo.format(FechaVencimiento);
-       String dia_cadena= formatoDia.format(FechaVencimiento);
-    String mes_cadena= formatoMes.format(FechaVencimiento);
-       String año_cadena= formatoAño.format(FechaVencimiento);
+        java.sql.Date fechaSQL;
+
+        if(categoria.equals("Perecible")){
+            fechaLong = FechaVencimiento.getTime();
+            fechaSQL = new java.sql.Date(fechaLong);
+        }else{
+            fechaSQL = null;
+        }
+        double cantidad = Double.parseDouble(txtCantidad.getText());
+        double precio = Double.parseDouble(txtPrecio.getText());
+    
+    
+        Insumo insumo = new Insumo(nombre,cantidad,fechaSQL,precio,categoria,codigoProducto);
        
-       String[] fvo_split= fvo_cadena.split(fvo_cadena);
-       String [] dia_split= dia_cadena.split(dia_cadena);
-        String [] mes_split= mes_cadena.split(mes_cadena);
-         String [] año_split= año_cadena.split(año_cadena);
-       
-            for(int i=0; i<dia_split.length;i++){
-                fecha+=dia_split[i];
-                fecha+=mes_split[i];
-                fecha+=año_split[i];
-        }
-        /* if(cbxCategoria.getSelectedItem().toString() != null){
-         FechaVencimiento= new Date();
-        }
-        else{
-            jdcFechaVencimiento.getDate();
-        }
-       // String fecha;
-       // Date Dia= txtDia.getDate();
-       // Date Mes= txtMes.getDate();
-       // Date Año= txtAño.getDate();
-     /*   SimpleDateFormat dia= new SimpleDateFormat("DD");
-        SimpleDateFormat mes= new SimpleDateFormat("MM");
-        SimpleDateFormat año= new SimpleDateFormat("YYYY");
-        String dia_split= dia.format(Dia);
-        String mes_split= mes.format(Mes);
-        String año_split= año.format(Año);
-        String[] Dia_split;*/
-        //Date Año=  new Date(txtAño.getToolTipText());
-        //FechaVencimiento fvo= new FechaVencimiento(Dia, Mes, Año);
-        double precio=Double.parseDouble(txtPrecio.getText());
-        double cantidad=Double.parseDouble(txtCantidad.getText());
-        Insumo insumo= new Insumo(nombre, cantidad, dia, precio, categoria, nombre);
-        /*if(txtFechaVencimiento.getText()==null)
-         //  fecha="";
-       else
-           fecha= txtFechaVencimiento.getText();
-        */
-          tabla[0]=insumo.getCodigo();
+            
+        
+       tabla[0]=insumo.getCodigo();
           
        tabla[1]=insumo.getNombre();
        tabla[2]=insumo.getCategoria();
        tabla[3]=insumo.getFechavencimiento();
        tabla[4]= insumo.getPrecio();
        tabla[5]= insumo.getCantidad();
-       tabla[6]= insumo.getFechavencimiento();
        dtm.addRow(tabla);
        ctl.AgregarInsumo(insumo);
 
@@ -315,57 +190,18 @@ public class frmRegistroInsumos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void btnTraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraspasoActionPerformed
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
-        frmModificarInsumo mod= new frmModificarInsumo();
-        new frmModificarInsumo().setVisible(true);
-        ctl.AgregarInsumo(insumo);
-        
-    }//GEN-LAST:event_btnTraspasoActionPerformed
+        this.dispose();
+        menuInventario.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroInsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmRegistroInsumos().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInsertar;
-    private javax.swing.JButton btnTraspaso;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cbxCategoria;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private com.toedter.calendar.JCalendar jCalendar1;

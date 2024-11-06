@@ -10,11 +10,12 @@ package vista;
  */
 public class frmModuloNotificaciones extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmModuloNotificaciones
-     */
-    public frmModuloNotificaciones() {
+    frmMenuGeneral menu;
+    public frmModuloNotificaciones(frmMenuGeneral menu) {
         initComponents();
+        this.menu = menu;
+        this.setSize(942, 540);
+        jPanel1.setSize(942,540);
     }
 
     /**
@@ -33,35 +34,14 @@ public class frmModuloNotificaciones extends javax.swing.JFrame {
         cbxFiltros = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        txtCelular = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtApellidoPaterno = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        txtDiscapacitado = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtApellidoMaterno = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtSexo = new javax.swing.JTextField();
         btnNotificar = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtaMensaje = new javax.swing.JTextArea();
-        btnEnviar = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        txtEdad = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jdcFecha = new com.toedter.calendar.JDateChooser();
-        txtCitasProgramadas = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        txtPacientesConfirmantes = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        txtNoConfirmantes = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,93 +52,62 @@ public class frmModuloNotificaciones extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nombre", "Apellidos", "Horas faltantes para su cita", "Estado de confirmación"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, 120));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 720, 120));
 
         btnFiltrar.setText("Filtrar");
-        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
+        jPanel1.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, -1, -1));
 
         cbxFiltros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(cbxFiltros, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 186, -1));
+        jPanel1.add(cbxFiltros, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 180, 186, -1));
 
         btnBuscar.setText("Buscar");
-        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 190, -1, -1));
-        jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 163, -1));
-
-        jLabel1.setText("Datos del cliente seleccionado");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 239, -1, -1));
-
-        jLabel2.setText("Nombre");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 291, -1, -1));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 288, 130, -1));
-
-        jLabel3.setText("# Celular");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 332, -1, -1));
-        jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 329, 120, -1));
-
-        jLabel4.setText("Apellido paterno");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, -1, -1));
-        jPanel1.add(txtApellidoPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 290, 120, -1));
-
-        jLabel5.setText("Discapacitado");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, -1, -1));
-        jPanel1.add(txtDiscapacitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 330, 110, -1));
-
-        jLabel6.setText("Apellido materno");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 290, -1, -1));
-        jPanel1.add(txtApellidoMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 290, 120, -1));
-
-        jLabel7.setText("Sexo");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 290, -1, -1));
-        jPanel1.add(txtSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 290, 90, -1));
+        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 180, -1, -1));
+        jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 180, 163, -1));
 
         btnNotificar.setText("Volver a notificar");
-        jPanel1.add(btnNotificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, 140, -1));
-
-        jLabel8.setText("Mensaje personalizado");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 392, -1, -1));
-
-        txtaMensaje.setColumns(20);
-        txtaMensaje.setRows(5);
-        jScrollPane2.setViewportView(txtaMensaje);
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 426, 370, -1));
-
-        btnEnviar.setText("Enviar");
-        jPanel1.add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 460, -1, -1));
-
-        jLabel9.setText("Edad");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 290, -1, -1));
-        jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 290, 90, -1));
-
-        jLabel10.setText("Estadísticas de notificaciones");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 20, -1, -1));
-
-        jLabel11.setText("# Citas programadas");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 50, -1, -1));
-        jPanel1.add(jdcFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 200, -1));
-        jPanel1.add(txtCitasProgramadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 50, 100, -1));
-
-        jLabel12.setText("# Pacientes que confirmaron su asistencia");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
-        jPanel1.add(txtPacientesConfirmantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 90, 100, -1));
-
-        jLabel13.setText("# Pacientes que no confirmaron su asistencia");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, -1, -1));
-        jPanel1.add(txtNoConfirmantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 130, 110, -1));
+        btnNotificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNotificarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnNotificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 140, -1));
+        jPanel1.add(jdcFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 200, -1));
 
         jLabel14.setText("Fecha");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegresarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 460, -1, -1));
+
+        jLabel1.setText("Datos del cliente");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, -1, -1));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 320, 120));
+
+        jButton1.setText("Ver estadísticas de confirmación de asistencia");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 310, 290, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,77 +117,33 @@ public class frmModuloNotificaciones extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmModuloNotificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmModuloNotificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmModuloNotificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmModuloNotificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        menu.setVisible(true);
+    }//GEN-LAST:event_btnRegresarMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmModuloNotificaciones().setVisible(true);
-            }
-        });
-    }
+    private void btnNotificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNotificarActionPerformed
+
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnFiltrar;
     private javax.swing.JButton btnNotificar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cbxFiltros;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     private com.toedter.calendar.JDateChooser jdcFecha;
-    private javax.swing.JTextField txtApellidoMaterno;
-    private javax.swing.JTextField txtApellidoPaterno;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtCelular;
-    private javax.swing.JTextField txtCitasProgramadas;
-    private javax.swing.JTextField txtDiscapacitado;
-    private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtNoConfirmantes;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPacientesConfirmantes;
-    private javax.swing.JTextField txtSexo;
-    private javax.swing.JTextArea txtaMensaje;
     // End of variables declaration//GEN-END:variables
 }
